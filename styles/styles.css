@@ -1,3 +1,8 @@
+.main {
+    width: 90%;
+    margin: auto;
+}
+
 .txt_no_label > label > span {
     display: none;
 }
@@ -39,6 +44,7 @@
     border-radius: 10px;
     padding: 10px;
     background: white;
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.7);
 }
 
 .category-legend {
@@ -72,4 +78,9 @@
     background: #3e8e41;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
     transform: translateY(0);
+}
+
+.textspan {
+    padding-left: none;
+    padding-right: none;
 }

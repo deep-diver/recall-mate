@@ -1,0 +1,67 @@
+[analyze]
+prompt = """
+Original Text for Analysis:
+$original_text
+
+Analysis and Feedback Instructions:
+Please provide one to five feedbacks on the original text. Each feedback should address a specific section of the text and should not overlap with other feedbacks. The feedbacks should be formatted in JSON as follows:
+
+{
+  "entities": [
+    {
+      "start": start_index,
+      "end": end_index,
+      "entity": "selected text",
+      "feedback": "feedback"
+    },
+    {
+      "start": start_index,
+      "end": end_index,
+      "entity": "selected text",
+      "feedback": "feedback"
+    },
+    {
+      "start": start_index,
+      "end": end_index,
+      "entity": "selected text",
+      "feedback": "feedback"
+    },
+    ...
+  ]
+}
+
+- The start index is the position in the original text where the feedback starts.
+- The end index is the position in the original text where the feedback ends.
+- The indices should be calculated such that each feedback addresses a distinct section of the text without overlapping any other feedback.
+
+Example:
+Given the text: "The quick brown fox jumps over the lazy dog."
+
+Feedback JSON:
+{
+  "entities": [
+    {
+      "start": 4,
+      "end": 9,
+      "entity": "Consider using a synonym for 'quick' to add variety."
+    },
+    {
+      "start": 16,
+      "end": 19,
+      "entity": "Rephrase 'fox jumps' to 'fox leaps' for a more vivid description."
+    },
+    {
+      "start": 35,
+      "end": 38,
+      "entity": "The word 'lazy' could be replaced with 'sluggish' to enhance meaning."
+    }
+  ]
+}
+In this example:
+
+- Feedback 1 addresses the word "quick" (indices 4 to 9).
+- Feedback 2 addresses the phrase "fox jumps" (indices 16 to 19).
+- Feedback 3 addresses the word "lazy" (indices 35 to 38).
+
+Please ensure that your feedback follows a similar format and that the indices accurately reflect the positions in the original text.
+"""

@@ -1,2 +1,3 @@
+toml
 gradio==4.39.0
 google-generativeai

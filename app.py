@@ -3,6 +3,15 @@ from gr_events import events
 from init import css, update_position_js
 
 css = """
+.main {
+    width: 90%;
+    margin: auto;
+}
+
+.md_text_center {
+    text-align: center;
+}
+
 .txt_no_label > label > span {
     display: none;
 }
@@ -13,7 +22,7 @@ css = """
 }
 
 .acc_big_font > button > span {
-    font-size: 15pt;
+    font-size: 12pt;
     font-weight: bold;
 }
 
@@ -44,6 +53,7 @@ css = """
     border-radius: 10px;
     padding: 10px;
     background: white;
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.7);
 }
 
 .category-legend {
@@ -114,16 +124,12 @@ with gr.Blocks(css=css) as demo:
 }
     )
 
+    gr.Markdown("# Recall Mate", elem_classes=["md_text_center"])
+
     with gr.Column(visible=False, elem_classes=["follow-cursor"]) as info_box:
-        gr.Markdown("### Evaluation")
+        gr.Markdown("### Evaluation", elem_classes=["md_text_center"])
         markdown = gr.Markdown("")
         gr.Button("Take Suggestion", elem_classes=["stylish-button"])
-
-    with gr.Accordion("External Knowledge", open=True, elem_classes=["acc_big_font"]) as url_section:
-        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
 
     highlighted_text = gr.HighlightedText(
         value=data.value,
@@ -144,16 +150,23 @@ with gr.Blocks(css=css) as demo:
         btn = gr.Button("Analyze", elem_classes=["stylish-button"])
         gr.Button(elem_classes=["stylish-button"])
 
+    with gr.Accordion("External Knowledge", open=True, elem_classes=["acc_big_font"]) as url_section:
+        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+        gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+
     btn.click(
-        events.test_click, btn,
-        [btn, tb_write, highlighted_text],
+        events.test_click, 
+        [btn, tb_write],
+        [btn, tb_write, highlighted_text, data],
     ).then(
         None, None, None,
         js=update_position_js
     )
 
     highlighted_text.select(
-        fn=events.on_select, inputs=[highlighted_text, data], outputs=[markdown]
+        fn=events.on_select, inputs=[highlighted_text, data, markdown], outputs=[markdown]
     )
 
 demo.launch()
