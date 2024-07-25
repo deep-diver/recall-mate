@@ -69,17 +69,19 @@ def test_click(title, tb_write, retry_num=5):
                 json_dict = None
                 cur_retry = cur_retry + 1
 
-        print(json_dict)
+        # print(json_dict)
         json_dict['text'] = tb_write
 		
+        previous_end = 0  # Initialize a variable to track the end index of the previous match
+
         for feedback in json_dict["entities"]:
             entity = feedback['entity']
-            for match in re.finditer(re.escape(entity), tb_write):
-                start_index = match.start()
-                end_index = match.end()
-				
-                feedback['start'] = start_index
-                feedback['end'] = end_index
+            match = re.search(re.escape(entity), tb_write[previous_end:])  # Search after the previous match
+            
+            if match:
+                feedback['start'] = match.start() + previous_end  # Adjust start index based on previous_end
+                feedback['end'] = match.end() + previous_end  # Adjust end index as well
+                previous_end = feedback['end']  # Update previous_end for the next iteration
 
         return [
             gr.Button("Back to writing"),
