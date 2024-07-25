@@ -1,0 +1,46 @@
+.txt_no_label > label > span {
+    display: none;
+}
+
+.txt_no_border > label > textarea {
+    border: none;
+    box-shadow: none;
+}
+
+.acc_big_font > button > span {
+    font-size: 15pt;
+    font-weight: bold;
+}
+
+.important {
+    background-color: yellow;
+}
+
+.height_500 {
+    height: 500px;
+}
+
+.height_500 > label > textarea {
+    height: 480px !important;
+    border: none;
+    box-shadow: none;
+}
+
+#highlight_txt > label {
+    display: none; 
+}
+
+.follow-cursor {
+    position: fixed !important;  /* Use fixed positioning for the viewport */
+    z-index: 100;      /* Ensure it's above other elements */
+    /* Add any additional styling here */
+    width: 100px;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.category-legend {
+    border-bottom: 1px dashed;
+    padding-bottom: 10px;
+}
