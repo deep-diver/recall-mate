@@ -1,0 +1,4 @@
+max_output_tokens: 2048
+temperature: 1.0
+top_p: 0.95
+top_k: 50

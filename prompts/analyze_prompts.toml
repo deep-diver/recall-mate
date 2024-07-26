@@ -4,7 +4,7 @@ Original Text for Analysis:
 $original_text
 
 Analysis and Feedback Instructions:
-Please provide one to five feedbacks on the original text. Each feedback should address a specific section of the text and should not overlap with other feedbacks. The feedbacks should be formatted in JSON as follows:
+Please provide one to five feedbacks on the original text. Feedback is to express some critical problems. Each feedback should address a specific section of the text and should not overlap with other feedbacks. The feedbacks should be formatted in JSON as follows:
 
 {
   "entities": [
