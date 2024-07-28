@@ -6,10 +6,17 @@ function updatePosition() {
     const chatAreaContainer = document.querySelector('.hidden_chat_container');
     const configArea = document.querySelector('.hidden_config_container');
     const configAreaContainer = document.querySelector('.hidden_config');
+    const navButton = document.querySelector('#nav_btn');
+    const previewButton = document.querySelector('#preview_btn');
 
     // Add event listener to the document
     document.addEventListener('click', (event) => {
-        if(chatArea.contains(event.target) || chatAreaContainer.contains(event.target) || configArea.contains(event.target) || configAreaContainer.contains(event.target)) {
+        if(chatArea.contains(event.target) 
+            || chatAreaContainer.contains(event.target) 
+            || configArea.contains(event.target) 
+            || configAreaContainer.contains(event.target)
+            || navButton.contains(event.target)
+            || previewButton.contains(event.target)) {
             console.log("inside chat area");
         }
         else {

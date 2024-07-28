@@ -50,7 +50,7 @@ def _parse_first_json_snippet(snippet):
 
 	return json_parsed_string
 
-def test_click(title, tb_write, retry_num=5):
+def analyze_click(title, tb_write, data, retry_num=5):
     if title == "Analyze":
         with open('prompts/analyze_prompts.toml', 'r') as f:
             prompt_tmpl = toml.load(f)
@@ -85,6 +85,7 @@ def test_click(title, tb_write, retry_num=5):
 
         return [
             gr.Button("Back to writing"),
+            gr.Button(interactive=False),
             gr.Textbox(visible=False), 
             gr.Highlightedtext(value=json_dict, visible=True),
 			json_dict,
@@ -92,9 +93,10 @@ def test_click(title, tb_write, retry_num=5):
     else:
         return [
             gr.Button("Analyze"),
+			gr.Button(interactive=True),
             gr.Textbox(visible=True), 
             gr.Highlightedtext(visible=False),
-			None
+			data
         ]
 
 def on_select(value, data, markdown, evt: gr.SelectData):  # Event handler function
@@ -110,4 +112,14 @@ def on_select(value, data, markdown, evt: gr.SelectData):  # Event handler funct
             data["text"][start:end] == selected_text:
             eval = entity["feedback"]
 
-    return gr.Markdown(value=eval)
+    return [
+		gr.Markdown(value=eval),
+		gr.Markdown(value=f"based on \"{eval}\"")
+    ]
+
+def submit_user_chat(chatbot, user_chat_message):
+	messages = chatbot
+	messages.append(
+        (user_chat_message, "????")
+    )
+	return messages
