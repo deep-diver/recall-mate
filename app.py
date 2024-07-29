@@ -3,6 +3,7 @@ from gr_events import events
 from init import css
 from init import (
     update_position_js,
+    stats_js,
     show_config_js, hide_config_js,
     show_chat_js, hide_chat_js,
     show_preview_js, hide_preview_js
@@ -122,22 +123,7 @@ with gr.Blocks(css=css) as demo:
 
         tb_write.change(
             None, tb_write, [ert, wc],
-            js="""
-function wc(text) {
-    const wordsPerMinute = 100; 
-
-    // Count the words using any of the methods mentioned before
-    const wordCount = text.split(/\s+/).filter(word => word !== "").length;
-
-    // Calculate read time in minutes and round up to the nearest minute
-    let readTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
-
-    // Format the output
-    readTimeMinutes = readTimeMinutes === 1 ? "## 1" : `## ${readTimeMinutes}`;
-
-    return [readTimeMinutes, '## ' + wordCount];
-}
-"""
+            js=stats_js
         )
 
     with gr.Row():

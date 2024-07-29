@@ -3,6 +3,9 @@ import yaml
 with open("styles/styles.css", "r") as f:
     css = f.read()
 
+with open("js/stats.js", "r") as f:
+    stats_js = f.read()
+
 with open("js/update_position.js", "r") as f:
     update_position_js = f.read()
 
