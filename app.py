@@ -4,17 +4,443 @@ from init import css
 from init import (
     update_position_js,
     stats_js,
+    show_bg_js, hide_bg_js,
     show_config_js, hide_config_js,
     show_chat_js, hide_chat_js,
     show_preview_js, hide_preview_js
 )
 from init import gen_configs
 
+css = """
+.gradio-container {
+    flex-grow: none !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    max-width: unset !important;
+    padding-left: 30px !important;
+    padding-right: 30px !important;
+    padding-top: 20px !important;
+}
+
+.md_text_center {
+    text-align: center;
+}
+
+.txt_no_label > label > span {
+    display: none;
+}
+
+.txt_no_border > label > textarea {
+    border: none;
+    box-shadow: none;
+}
+
+.acc_big_font > button > span {
+    font-size: 12pt;
+    font-weight: bold;
+}
+
+.important {
+    background-color: yellow;
+}
+
+.height_500 {
+    height: 500px;
+}
+
+.height_500 > label > textarea {
+    height: 480px !important;
+    border: none;
+    box-shadow: none;
+}
+
+#tb_write {
+    padding: 0px;
+}
+
+#tb_write > label > textarea{
+    line-height: var(--scale-3);
+}
+
+#highlight_txt {
+    overflow: scroll !important;
+}
+
+#highlight_txt > label {
+    display: none; 
+}
+
+.follow-cursor {
+    position: fixed !important;  /* Use fixed positioning for the viewport */
+    z-index: 100;      /* Ensure it's above other elements */
+    /* Add any additional styling here */
+    width: 100px;
+    border: 1px solid;
+    border-radius: 10px;
+    padding: 10px;
+    background: white;
+    box-shadow: 0 2px 9px rgba(0, 0, 0, 0.7);
+}
+
+.category-legend {
+    border-bottom: 1px dashed;
+    padding-bottom: 10px;
+}
+
+.stylish-button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background: #4CAF50;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    min-width: unset;
+}
+
+.stylish-button:hover {
+    background: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.stylish-button:active {
+    background: #3e8e41;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+}
+
+.stylish-button2 {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    color: #ffffff;
+    background: #4caf50c4;
+    border: none;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    font-size: 15pt;
+}
+
+.stylish-button2:hover {
+    background: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.stylish-button2:active {
+    background: #2E8B57;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    transform: translateY(0);
+}
+
+.narrow-stylish-botton {
+    padding: 4px 10px;
+    margin-bottom: 5px;
+}
+
+.textspan {
+    padding-left: none;
+    padding-right: none;
+}
+
+.md_vertical_margin {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.acc_nogap > div > div {
+    gap: unset;
+}
+
+.btn_no_width {
+    min-width: 0px;
+}
+
+.row_nogap {
+    gap: 5px;
+}
+
+.acc_only_bottom_shadow {
+    border: none !important;
+    box-shadow: 0px 5px 4px 0px rgba(0, 0, 0, 0.1);
+}
+
+.acc_noborder {
+    border: none !important;
+    box-shadow: none;
+}
+
+.hidden_chat {
+    transition: transform 0.5s ease-in-out; /* Smooth transition */
+    
+    position: fixed;  /* Ensures it's always on top */
+    top: 0;
+    right: -1000px;
+    width: 70%;
+    height: 100%;
+    background-color: white;
+    z-index: 9999; /* A very high value to ensure it's on top */
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 20px 0px 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) -20px 0px 20px 20px;
+}
+
+.hidden_chat_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition */
+
+    position: fixed;  /* Ensures it's always on top */
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: -2; /* A very high value to ensure it's on top */
+}
+
+.hidden_chat.show {
+    transform: translateX(-1000px);
+}
+
+.hidden_chat_container.show {
+    opacity: 1;
+    z-index: 9998;
+}
+
+.hidden_config {
+    transition: transform 0.5s ease-in-out; /* Smooth transition */
+    
+    position: fixed;  /* Ensures it's always on top */
+    bottom: 0;
+    right: -1000px;
+    width: 50%;
+    height: 99%;
+    background-color: white;
+    z-index: 10002; /* A very high value to ensure it's on top */
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 20px 0px 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) -20px 0px 20px 20px;
+}
+
+.hidden_config.show {
+    transform: translateX(-1000px);
+}
+
+.hidden_config_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition */
+
+    position: fixed;  /* Ensures it's always on top */
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: -2; /* A very high value to ensure it's on top */
+}
+
+.hidden_config_container.show {
+    opacity: 1;
+    z-index: 10001;
+}
+
+.hidden_preview {
+    transition: transform 0.5s ease-in-out; /* Smooth transition */
+    
+    position: fixed;  /* Ensures it's always on top */
+    bottom: 0;
+    right: -1000px;
+    width: 100%;
+    height: 99%;
+    background-color: white;
+    z-index: 9999; /* A very high value to ensure it's on top */
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 20px 0px 0px 20px;
+    box-shadow: rgba(0, 0, 0, 0.1) -20px 0px 20px 20px;
+    padding-right: 50px;
+}
+
+.hidden_preview.show {
+    transform: translateX(-1000px);
+}
+
+.hidden_preview_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition */
+
+    position: fixed;  /* Ensures it's always on top */
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: -2; /* A very high value to ensure it's on top */
+}
+
+.hidden_preview_container.show {
+    opacity: 1;
+    z-index: 9998;
+}
+
+.hidden_background_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out; /* Smooth transition */
+
+    position: fixed;  /* Ensures it's always on top */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    z-index: -2; /* A very high value to ensure it's on top */
+}
+
+.hidden_background_container.show {
+    opacity: 1;
+    z-index: 9996;    
+}
+
+.hidden_background {
+    transition: transform 0.5s ease-in-out; /* Smooth transition */
+    
+    position: fixed;  /* Ensures it's always on top */
+    bottom: 0;
+    left: -1000px;
+    width: 90%;
+    height: 99%;
+    background-color: white;
+    z-index: 9997; /* A very high value to ensure it's on top */
+    border: 1px solid;
+    border-color: aliceblue;
+    border-radius: 0px 20px 20px 0px;
+    box-shadow: rgba(0, 0, 0, 0.1) 20px 0px 20px 20px;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-top: 30px;
+}
+
+.hidden_background.show {
+    transform: translateX(1000px);
+}
+
+.modal_back_btn {
+    font-size: 20pt;
+    background: transparent;
+    box-shadow: none;
+    border: none;
+    width: max-content;
+    border-radius: 20px;
+}
+
+.modal_back_btn:active {
+    background: gray;
+}
+
+.modal_trigger {
+    position: fixed;      /* Position it relative to the viewport */
+    padding: 0px;
+    top: 50%;            /* Center it vertically */
+    right: 10px;         /* Position on the right with some margin */
+    transform: translateY(-50%); /* Adjust for vertical centering */
+    width: 10px;          /* Adjust width as needed */
+    height: 80px;         /* Adjust height as needed */
+    background: #007bff;
+    cursor: pointer;     /* Indicate it's clickable */
+    border-radius: 10px;    /* Add rounded corners */
+    z-index: 10000;        /* Ensure it's above other content */
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.modal_trigger:hover {
+    background: #0069d9;
+    width: 15px;
+}
+
+.modal_trigger:active {
+    background: #0062cc;
+    width: 10px;
+}
+
+.padding_20px {
+    padding: 20px;
+}
+
+.md_overflow_scroll {
+    overflow: scroll !important;
+}
+
+.chatbot_fullheight {
+    height: 100% !important;
+}
+
+.chatbot_nolabel > div > label {
+    display: none;
+}
+
+#chat_user_message {
+    margin: 0px;
+    padding: 0px;
+    height: 100px;
+}
+
+#chat_user_message > label > span {
+    display: none;
+}
+
+.weird_1p_height {
+    height: 1%;
+}
+
+#writing_container > div {
+    border: none;
+    box-shadow: none;
+}
+
+#writing_container, #stats_container, #history_container, #background_container {
+    padding: 12px;
+    border: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    border-color: antiquewhite;
+    box-shadow: -1px 0px 20px 2px rgb(224 224 224 / 70%);
+}
+
+#stats_container {
+    row-gap: 10px;
+}
+
+.md_stat_label > div > div > span > h5 {
+    color: gray;
+}
+
+#plus_btn {
+    min-width: fit-content;
+    font-size: 20px;
+}
+"""
+
 with gr.Blocks(css=css) as demo:
     data = gr.State()
 
     gr.Markdown("# Exploring the Future of Writing with Recall Mate", elem_classes=["md_text_center"]) 
 
+    # HIDDEN -----
     nav_btn = gr.Button("", elem_id="nav_btn", elem_classes=["modal_trigger"])
     nav_btn.click(None, None, None, js=show_config_js)
 
@@ -94,6 +520,28 @@ with gr.Blocks(css=css) as demo:
             chat_btn = gr.Button("💬", elem_classes=["btn_no_width", "stylish-button2", "narrow-stylish-botton"])
 
             chat_btn.click(None, None, None, js=show_chat_js)
+
+    aaa = gr.Button("d")
+    aaa.click(
+        None, None, None, 
+        js=show_bg_js
+    )
+
+    with gr.Column(visible=True, elem_classes=["hidden_background_container"]):
+        gr.Markdown("")
+
+    with gr.Column(visible=True, elem_classes=["hidden_background"]):
+        with gr.Column(elem_classes=["padding_20px"]):
+            gr.Markdown("# Setups", elem_classes=['md_text_center'])
+
+            with gr.Row():
+                gr.Textbox(placeholder="enter external knowledge (URL)", label=None, elem_classes=["txt_no_label", "txt_no_border"], scale=12)
+                gr.Button("+", elem_id="plus_btn", elem_classes=["stylish-button"], interactive=True)
+
+            bg_modal_back_btn = gr.Button("Done", elem_id="plus_btn", elem_classes=["stylish-button"], interactive=True)
+
+    bg_modal_back_btn.click(None, None, None, js=hide_bg_js)
+    # ----- HIDDEN
 
     with gr.Column(elem_id="stats_container"):
         with gr.Row():
