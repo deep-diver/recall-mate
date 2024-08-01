@@ -15,8 +15,8 @@ css = """
 .gradio-container {
     flex-grow: none !important;
     padding: 0px !important;
-    margin: 0px !important;
-    max-width: unset !important;
+    margin: auto !important;
+    max-width: 80% !important;
     padding-left: 30px !important;
     padding-right: 30px !important;
     padding-top: 20px !important;
@@ -187,7 +187,7 @@ css = """
     
     position: fixed;  /* Ensures it's always on top */
     top: 0;
-    right: -1000px;
+    right: -10000px;
     width: 70%;
     height: 100%;
     background-color: white;
@@ -212,7 +212,7 @@ css = """
 }
 
 .hidden_chat.show {
-    transform: translateX(-1000px);
+    transform: translateX(-10000px);
 }
 
 .hidden_chat_container.show {
@@ -225,7 +225,7 @@ css = """
     
     position: fixed;  /* Ensures it's always on top */
     bottom: 0;
-    right: -1000px;
+    right: -10000px;
     width: 50%;
     height: 99%;
     background-color: white;
@@ -237,7 +237,7 @@ css = """
 }
 
 .hidden_config.show {
-    transform: translateX(-1000px);
+    transform: translateX(-10000px);
 }
 
 .hidden_config_container {
@@ -263,7 +263,7 @@ css = """
     
     position: fixed;  /* Ensures it's always on top */
     bottom: 0;
-    right: -1000px;
+    right: -10000px;
     width: 100%;
     height: 99%;
     background-color: white;
@@ -276,7 +276,7 @@ css = """
 }
 
 .hidden_preview.show {
-    transform: translateX(-1000px);
+    transform: translateX(-10000px);
 }
 
 .hidden_preview_container {
@@ -320,7 +320,7 @@ css = """
     
     position: fixed;  /* Ensures it's always on top */
     bottom: 0;
-    left: -1000px;
+    left: -10000px;
     width: 90%;
     height: 99%;
     background-color: white;
@@ -335,7 +335,7 @@ css = """
 }
 
 .hidden_background.show {
-    transform: translateX(1000px);
+    transform: translateX(10000px);
 }
 
 .modal_back_btn {
@@ -471,11 +471,11 @@ with gr.Blocks(css=css) as demo:
             gr.Slider(0, 100, step=1, value=gen_configs['top_k'], label="top k", interactive=True)
 
             # gr.Markdown("### External Knowledge", elem_classes=["md_color_white"])
-            with gr.Accordion("External Knowledge", open=False, elem_classes=["acc_big_font", "acc_only_bottom_shadow"]) as url_section:
-                gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-                gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-                gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
-                gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+            # with gr.Accordion("External Knowledge", open=False, elem_classes=["acc_big_font", "acc_only_bottom_shadow"]) as url_section:
+            #     gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+            #     gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+            #     gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
+            #     gr.Textbox(placeholder="enter external knowledge (URL)", label=None, scale=8, elem_classes=["txt_no_label", "txt_no_border"])
 
             gr.Markdown("### Image Generation", elem_classes=["md_color_white"])
 
@@ -520,12 +520,6 @@ with gr.Blocks(css=css) as demo:
             chat_btn = gr.Button("💬", elem_classes=["btn_no_width", "stylish-button2", "narrow-stylish-botton"])
 
             chat_btn.click(None, None, None, js=show_chat_js)
-
-    aaa = gr.Button("d")
-    aaa.click(
-        None, None, None, 
-        js=show_bg_js
-    )
 
     with gr.Column(visible=True, elem_classes=["hidden_background_container"]):
         gr.Markdown("")
